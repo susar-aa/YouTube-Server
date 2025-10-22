@@ -1,50 +1,90 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SuzxLabs Video Saver</title>
-    <!-- Links to the new CSS file -->
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
     
-    <!-- This is the main container for the downloader app -->
-    <div class="container">
-        <h1>🎬 SuzxLabs Video Saver</h1>
-        <p>Paste a YouTube URL to get download options.</p>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- This is still needed for the spinner animation -->
+    <link rel="stylesheet" href="style.css">
+    
+    <!-- Google Font (Inter) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Apply the font */
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-gray-200 flex items-center justify-center min-h-screen p-4">
+
+    <!-- Main App Card -->
+    <div class="bg-gray-800 p-6 sm:p-8 rounded-2xl shadow-2xl w-full max-w-lg border border-gray-700">
         
-        <div class="input-group">
-            <input type="text" id="youtube-url" placeholder="Enter YouTube URL here...">
+        <!-- Header -->
+        <h1 class="text-2xl sm:text-3xl font-bold text-center text-white mb-2 flex items-center justify-center gap-3">
+            <svg class="w-8 h-8 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            SuzxLabs Video Saver
+        </h1>
+        <p class="text-center text-gray-400 mb-6">Paste a YouTube URL to get download options.</p>
+        
+        <!-- Input Group -->
+        <div class="input-group relative w-full mb-4">
+            <input type="text" id="youtube-url" placeholder="Enter YouTube URL here..." class="w-full p-4 pr-12 bg-gray-700 text-gray-100 rounded-lg border border-gray-600 focus:ring-2 focus:ring-red-500 focus:outline-none transition-all" />
+            <svg class="w-6 h-6 text-gray-400 absolute right-4 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.102 1.101m.758 4.899l-5.656 5.656"></path></svg>
         </div>
 
-        <!-- Video Preview Section (Unchanged) -->
-        <div class="video-preview" id="video-preview" style="display: none;">
+        <!-- Video Preview Section -->
+        <div class="video-preview bg-gray-700/50 rounded-lg p-4 flex items-center gap-4 border border-gray-700" id="video-preview" style="display: none;">
             <iframe id="video-player" 
+                    class="rounded-md flex-shrink-0"
+                    width="120"
+                    height="68"
                     src="" 
                     frameborder="0" 
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
                     allowfullscreen></iframe>
-            <h3 id="video-title"></h3>
+            <h3 id="video-title" class="font-semibold text-gray-100 flex-1 line-clamp-2">Video Title Will Appear Here</h3>
         </div>
 
-        <!-- This group contains the quality selector and download buttons -->
-        <div class="quality-group" id="quality-group" style="display: none;">
-            <label for="quality-select">Choose Quality:</label>
-            <select id="quality-select"></select>
+        <!-- Download Options Group -->
+        <div class="quality-group mt-6 space-y-4" id="quality-group" style="display: none;">
             
-            <!-- Updated buttons with spinner elements -->
-            <button id="download-btn">
-                <span class="btn-text">Download Video</span>
-                <span class="spinner" style="display: none;"></span>
-            </button>
-            <button id="download-mp3-btn">
-                <span class="btn-text">Download MP3</span>
-                <span class="spinner" style="display: none;"></span>
-            </button>
+            <!-- Quality Selector -->
+            <div>
+                <label for="quality-select" class="block text-sm font-medium text-gray-300 mb-2">Choose Quality:</label>
+                <select id="quality-select" class="w-full p-3 bg-gray-700 text-gray-100 rounded-lg border border-gray-600 focus:ring-2 focus:ring-red-500 focus:outline-none">
+                    <!-- Options will be populated by script.js -->
+                </select>
+            </div>
+            
+            <!-- Download Buttons -->
+            <div class="flex flex-col sm:flex-row gap-4">
+                <!-- Video Download Button -->
+                <button id="download-btn" class="flex-1 p-3 rounded-lg font-semibold flex items-center justify-center gap-2 transition-all disabled:opacity-50 bg-red-600 hover:bg-red-700 text-white shadow-lg">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l-3 3m0 0l-3-3m3 3v-7m6 10a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    <span class="btn-text">Download Video</span>
+                    <span class="spinner" style="display: none;"></span>
+                </button>
+                
+                <!-- MP3 Download Button -->
+                <button id="download-mp3-btn" class="flex-1 p-3 rounded-lg font-semibold flex items-center justify-center gap-2 transition-all disabled:opacity-50 bg-green-600 hover:bg-green-700 text-white shadow-lg">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2z"></path></svg>
+                    <span class="btn-text">Download MP3</span>
+                    <span class="spinner" style="display: none;"></span>
+                </button>
+            </div>
         </div>
         
-        <div id="result">
+        <!-- Result/Status Message -->
+        <div id="result" class="text-center mt-6 text-gray-400 min-h-[1.25rem]">
             <!-- Status messages will appear here -->
         </div>
     </div>
@@ -53,3 +93,4 @@
     <script src="script.js"></script>
 </body>
 </html>
+
