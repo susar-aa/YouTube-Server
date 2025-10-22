@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SuzxLabs Video Saver</title>
+    <!-- Links to the new CSS file -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    
+    <!-- This is the main container for the downloader app -->
+    <div class="container">
+        <h1>🎬 SuzxLabs Video Saver</h1>
+        <p>Paste a YouTube URL to get download options.</p>
+        
+        <div class="input-group">
+            <input type="text" id="youtube-url" placeholder="Enter YouTube URL here...">
+        </div>
+
+        <!-- Video Preview Section (Unchanged) -->
+        <div class="video-preview" id="video-preview" style="display: none;">
+            <iframe id="video-player" 
+                    src="" 
+                    frameborder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                    allowfullscreen></iframe>
+            <h3 id="video-title"></h3>
+        </div>
+
+        <!-- This group contains the quality selector and download buttons -->
+        <div class="quality-group" id="quality-group" style="display: none;">
+            <label for="quality-select">Choose Quality:</label>
+            <select id="quality-select"></select>
+            
+            <!-- Updated buttons with spinner elements -->
+            <button id="download-btn">
+                <span class="btn-text">Download Video</span>
+                <span class="spinner" style="display: none;"></span>
+            </button>
+            <button id="download-mp3-btn">
+                <span class="btn-text">Download MP3</span>
+                <span class="spinner" style="display: none;"></span>
+            </button>
+        </div>
+        
+        <div id="result">
+            <!-- Status messages will appear here -->
+        </div>
+    </div>
+
+    <!-- Link to the script file -->
+    <script src="script.js"></script>
+</body>
+</html>
